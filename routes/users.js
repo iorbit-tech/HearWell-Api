@@ -2,19 +2,15 @@ const express = require("express");
 
 const router = express.Router();
 
-const {
-    getAllVitals,
-    createVitals
-   
-} = require("../controllers/vitals");
+const { createUsers, userLogin, updateUser } = require("../controllers/users");
 
-/**
- * @route GET api/vitals
- * @description get all todos
- * @access public
- */
+// /**
+//  * @route GET api/vitals
+//  * @description get all todos
+//  * @access public
+//  */
 
-router.get("/", getAllVitals);
+// router.get("/", getAllVitals);
 
 /**
  * @route POST api/todo
@@ -22,14 +18,23 @@ router.get("/", getAllVitals);
  * @access public
  */
 
-router.post("/", createVitals);
+router.post("/", createUsers);
 
 // /**
 //  * @route PUT api/todo/:id
 //  * @description update todo
 //  * @access public
 //  */
-// router.put("/:id", putUpdateTodo);
+
+/**
+ * @route POST api/user/login
+ * @description Add a new TODO
+ * @access public
+ */
+
+router.post("/login", userLogin);
+
+router.put("/:id", updateUser);
 
 // /**
 //  * @route DELETE api/todo/:id

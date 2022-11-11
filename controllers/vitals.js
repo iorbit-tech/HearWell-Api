@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const Vitals = require("../models/vitals");
 
 exports.getAllVitals = (req, res) => {
@@ -7,21 +8,21 @@ exports.getAllVitals = (req, res) => {
             res.json(vitals);
         })
         .catch((err) =>
-            res
-                .status(404)
-                .json({ message: "no todo found", error: err.message })
+            res.status(404)
+                .json({ message: "no vitals found", error: err.message })
         );
 };
 
-exports.postCreateTodo = (req, res) => {
-    Todo.create(req.body)
+exports.createVitals = (req, res) => {
+    req.body.userId = uuidv4();
+    Vitals.create(req.body)
         .then((data) => {
             console.log({ data });
-            res.json({ message: "todo added successfully", data });
+            res.json({ message: "vitals added successfully", data });
         })
         .catch((err) =>
             res.status(400).json({
-                message: "unable to add new todo",
+                message: "unable to add new vitals",
                 error: err.message,
             })
         );

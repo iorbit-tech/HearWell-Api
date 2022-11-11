@@ -9,26 +9,32 @@ const HealthCondition = new mongoose.Schema({
   },
 });
 
-const VitalsSchema = new mongoose.Schema({
-  currentHealthStatus: {
-    type: String,
-    required: true,
+const VitalsSchema = new mongoose.Schema(
+  {
+    currentHealthStatus: {
+      type: String,
+      required: true,
+    },
+    healthCondition: [HealthCondition],
+    name: {
+      type: String,
+      required: true,
+    },
+    yearOfBirth: {
+      type: String,
+    },
+    otherHC: {
+      type: String,
+    },
+    hearingAidUser: {
+      type: Boolean,
+    },
+    userId: {
+      type: String,
+    },
   },
-  healthCondition: [HealthCondition],
-  name: {
-    type: String,
-    required: true,
-  },
-  yearOfBirth: {
-    type: String,
-  },
-  otherHC: {
-    type: String,
-  },
-  hearingAidUser: {
-    type: Boolean,
-  },
-});
+  { timestamps: true }
+);
 
 const Vitals = mongoose.model("basic-vitals", VitalsSchema);
 

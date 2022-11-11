@@ -8,6 +8,8 @@ const app = express();
 
 // routes
 const vitals = require("./routes/vitals");
+const todo = require("./routes/todo");
+const users = require("./routes/users");
 // connect database
 connectDB();
 
@@ -20,6 +22,8 @@ app.get("/", (req, res) => res.send("server is active"));
 
 // use routes
 app.use("/api/vitals", vitals);
+app.use("/api/todo", todo);
+app.use("/api/user", users);
 
 // setting up port
 
