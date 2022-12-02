@@ -11,6 +11,7 @@ const UsersSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      required: true,
     },
     userType: {
       type: String,
@@ -20,9 +21,11 @@ const UsersSchema = new mongoose.Schema(
     },
     firstName: {
       type: String,
+      required: true,
     },
     lastName: {
       type: String,
+      required: true,
     },
     dob: {
       type: String,
@@ -50,6 +53,7 @@ const UsersSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      required: true,
     },
     phone: {
       type: String,

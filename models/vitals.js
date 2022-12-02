@@ -15,7 +15,7 @@ const VitalsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    healthCondition: [HealthCondition],
+    healthCondition: HealthCondition,
     name: {
       type: String,
       required: true,
@@ -23,13 +23,16 @@ const VitalsSchema = new mongoose.Schema(
     yearOfBirth: {
       type: String,
     },
-    otherHC: {
+    otherHealthConditions: {
       type: String,
     },
     hearingAidUser: {
       type: Boolean,
     },
     userId: {
+      type: String,
+    },
+    vitalId: {
       type: String,
     },
   },

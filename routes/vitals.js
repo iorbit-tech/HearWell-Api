@@ -1,42 +1,23 @@
 const express = require("express");
-
+const jwt = require("jsonwebtoken");
 const router = express.Router();
+const authToken = require("../authToken");
 
 const {
-    getAllVitals,
-    createVitals
-   
+  getAllVitals,
+  createVitals,
+  getUsersVitals,
+  getVitalsById,
+  updateVitals,
+  deleteVital,
 } = require("../controllers/vitals");
 
-/**
- * @route GET api/vitals
- * @description get all todos
- * @access public
- */
 
-router.get("/", getAllVitals);
-
-/**
- * @route POST api/todo
- * @description Add a new TODO
- * @access public
- */
-
-router.post("/", createVitals);
-
-// /**
-//  * @route PUT api/todo/:id
-//  * @description update todo
-//  * @access public
-//  */
-// router.put("/:id", putUpdateTodo);
-
-// /**
-//  * @route DELETE api/todo/:id
-//  * @description delete todo by id
-//  * @access public
-//  */
-
-// router.delete("/:id", deleteTodo);
+router.get("/", authToken, getAllVitals);
+router.post("/", authToken, createVitals);
+router.put("/:id", authToken, updateVitals);
+router.get("/userid/:id", authToken, getUsersVitals);
+router.get("/vitalid/:id", authToken, getVitalsById);
+router.delete("/vitalid/:id", authToken, deleteVital);
 
 module.exports = router;

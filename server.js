@@ -8,8 +8,13 @@ const app = express();
 
 // routes
 const vitals = require("./routes/vitals");
-const todo = require("./routes/todo");
 const users = require("./routes/users");
+const userType = require("./routes/userType");
+const surveyQuestion = require("./routes/surveyQuestions");
+const hearingDiary = require("./routes/hearingDiary");
+const chatMessages = require("./routes/chatMessages");
+const makeQuestions = require("./routes/makeQuestions");
+
 // connect database
 connectDB();
 
@@ -22,13 +27,17 @@ app.get("/", (req, res) => res.send("server is active"));
 
 // use routes
 app.use("/api/vitals", vitals);
-app.use("/api/todo", todo);
 app.use("/api/user", users);
+app.use("/api/user-type", userType);
+app.use("/api/survey-questions", surveyQuestion);
+app.use("/api/hearing-diary", hearingDiary);
+app.use("/api/chat", chatMessages);
+app.use("/api/questions", makeQuestions);
 
 // setting up port
 
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
-    console.log(`server is running on http://localhost:${PORT}`);
+  console.log(`server is running on http://localhost:${PORT}`);
 });
