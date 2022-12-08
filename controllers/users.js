@@ -3,14 +3,26 @@ const Users = require("../models/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.getAllUsers = (req, res) => {
-  Vitals.find()
-    .then((vitals) => {
-      console.log({ vitals });
-      res.json(vitals);
+exports.isUserExist = (req, res) => {
+  Users.find({email:req.body.email})
+    .then((user) => {
+      console.log(user);
+      if(user.length) return res.status(403).json({message:'user exist'});
+      res.status(404).json({message:'no user exist'})
     })
     .catch((err) =>
-      res.status(404).json({ message: "no vitals found", error: err.message })
+      res.status(404).json({ message: "no user found", error: err.message })
+    );
+};
+
+exports.getAllUsers = (req, res) => {
+  Users.find({status:true,userType:'user'},"userId userName firstName lastName")
+    .then((user) => {
+      console.log({ user });
+      res.json(user);
+    })
+    .catch((err) =>
+      res.status(404).json({ message: "no user found", error: err.message })
     );
 };
 
@@ -19,6 +31,7 @@ exports.createUsers = async (req, res) => {
     hashPassword = await bcrypt.hash(req.body.password, 10);
     req.body.userId = uuidv4();
     req.body.password = hashPassword;
+    req.body.status = true;
     console.log(hashPassword);
 
     Users.findOne({ email: req.body.email }).then((data) => {
@@ -47,19 +60,24 @@ exports.createUsers = async (req, res) => {
 };
 
 exports.userLogin = async (req, res) => {
-  const query = { email: req.body.email };
+  const query = { email: req.body.email, status: true };
   console.log("user login :", query);
 
-  Users.findOne(query)
+  Users.findOne(
+    query,
+    "userId userName password userType firstName lastName dob gender maritalStatus address1 address2 city country zip email phone"
+  )
     .then((data) => {
       if (data) {
         const auth = bcrypt.compareSync(req.body.password, data.password);
         if (auth) {
           const token = jwt.sign({ data }, "secretKey");
+          const { ["password"]: remove, ...user } = data._doc;
+          console.log(user);
           res.json({
             message: "Authentication Success",
-            token: token,
-            data: [data],
+            token,
+            user,
           });
         } else {
           res.status(400).json({
