@@ -14,6 +14,7 @@ const surveyQuestion = require("./routes/surveyQuestions");
 const hearingDiary = require("./routes/hearingDiary");
 const chatMessages = require("./routes/chatMessages");
 const makeQuestions = require("./routes/makeQuestions");
+const surveyAnswers = require("./routes/surveyAnswers");
 
 // connect database
 connectDB();
@@ -33,6 +34,7 @@ app.use("/api/survey-questions", surveyQuestion);
 app.use("/api/hearing-diary", hearingDiary);
 app.use("/api/chat", chatMessages);
 app.use("/api/questions", makeQuestions);
+app.use("/api/answers", surveyAnswers);
 
 // setting up port
 

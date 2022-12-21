@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 // mongoose.pluralize(null);
 const SurveyAnswersSchema = new mongoose.Schema({
+    
   questionId: {
     type: String,
     required: true,
@@ -9,9 +10,9 @@ const SurveyAnswersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  answer: {
+  answerId: {
     type: String,
-    //required: true,
+    required: true,
   },
   answerType: {
     type: String,
@@ -27,6 +28,6 @@ const SurveyAnswersSchema = new mongoose.Schema({
   },
 });
 
-const surveyAnswers = mongoose.model("survey-answers", SurveyAnswersSchema);
+const surveyAnswers = mongoose.model("survey-answer", SurveyAnswersSchema);
 
 module.exports = surveyAnswers;

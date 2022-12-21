@@ -4,7 +4,7 @@ const Vitals = require("../models/vitals");
 exports.getVitalsById = (req, res) => {
   const query = { vitalId: req.params.id };
 
-  Vitals.find(query)
+  Vitals.findOne(query)
     .then((notes) => {
       console.log({ notes });
       res.json(notes);

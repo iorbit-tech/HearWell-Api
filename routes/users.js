@@ -7,13 +7,16 @@ const {
   userLogin,
   updateUser,
   getAllUsers,
-  isUserExist
+  isUserExist,
+  userGoogleLogin,
 } = require("../controllers/users");
 
 router.post("/", createUsers);
 router.get("/", authToken, getAllUsers);
 router.post("/login", userLogin);
 router.post("/isuser", isUserExist);
+router.post("/googlelogin", userGoogleLogin);
+
 router.put("/:id", authToken, updateUser);
 
 module.exports = router;

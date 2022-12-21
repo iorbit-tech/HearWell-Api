@@ -7,7 +7,7 @@ exports.isUserExist = (req, res) => {
   Users.find({email:req.body.email})
     .then((user) => {
       console.log(user);
-      if(user.length) return res.status(403).json({message:'user exist'});
+      if(user.length) return res.status(200).json({message:'user exist'});
       res.status(404).json({message:'no user exist'})
     })
     .catch((err) =>
@@ -70,6 +70,46 @@ exports.userLogin = async (req, res) => {
     .then((data) => {
       if (data) {
         const auth = bcrypt.compareSync(req.body.password, data.password);
+        if (auth) {
+          const token = jwt.sign({ data }, "secretKey");
+          const { ["password"]: remove, ...user } = data._doc;
+          console.log(user);
+          res.json({
+            message: "Authentication Success",
+            token,
+            user,
+          });
+        } else {
+          res.status(400).json({
+            message: "Authentication Failed",
+          });
+        }
+      } else {
+        res.status(400).json({
+          message: "No such user",
+        });
+      }
+    })
+    .catch((err) =>
+      res.status(400).json({
+        message: "unable to login",
+        error: err.message,
+      })
+    );
+};
+
+exports.userGoogleLogin = async (req, res) => {
+  const query = { email: req.body.email, status: true };
+  console.log("user login :", query);
+
+  Users.findOne(
+    query,
+    "userId userName password userType firstName lastName dob gender maritalStatus address1 address2 city country zip email phone"
+  )
+    .then((data) => {
+      if (data) {
+        const auth = true
+        //bcrypt.compareSync(req.body.password, data.password);
         if (auth) {
           const token = jwt.sign({ data }, "secretKey");
           const { ["password"]: remove, ...user } = data._doc;

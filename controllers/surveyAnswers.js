@@ -1,13 +1,37 @@
 const surveyAnswers = require("../models/surveyAnswers");
 const { v4: uuidv4 } = require("uuid");
 
-exports.getQuestionsByPage = (req, res) => {
-  const query = { page: req.params.id };
+exports.getAnswersFromUserByPage = (req, res) => {
+  const query = { userId: req.body.userId, questionId: req.body.questionId ,page:req.body.page };
 
-  makeQuestions
+  surveyAnswers
     .find(query)
     .then((question) => {
       console.log({ question });
+      if (question == null)
+        return res
+          .status(404)
+          .json({ message: "no questions found" });
+      res.status(200).json(question);
+    })
+    .catch((err) =>
+      res
+        .status(404)
+        .json({ message: "no questions found", error: err.message })
+    );
+};
+
+exports.getAnswersFromUser = (req, res) => {
+  const query = { userId: req.body.userId, questionId: req.body.questionId };
+
+  surveyAnswers
+    .findOne(query)
+    .then((question) => {
+      console.log({ question });
+      if (question == null)
+        return res
+          .status(404)
+          .json({ message: "no questions found" });
       res.status(200).json(question);
     })
     .catch((err) =>
@@ -43,22 +67,22 @@ exports.createAnswers = async (req, res) => {
     //       .status(403)
     //       .json({ message: "Question order already exists " });
 
-      req.body.questionId = uuidv4();
-      console.log(req.body);
-      // req.body.password = hashPassword;
-      // console.log(hashPassword);
-      makeQuestions
-        .create(req.body)
-        .then((data) => {
-          // console.log({ data },"data from ");
-          res.json({ message: "Question created successfully", data });
+    req.body.answerId = uuidv4();
+    console.log(req.body);
+    // req.body.password = hashPassword;
+    // console.log(hashPassword);
+    surveyAnswers
+      .create(req.body)
+      .then((data) => {
+        // console.log({ data },"data from ");
+        res.json({ message: "Answers added successfully", data });
+      })
+      .catch((err) =>
+        res.status(400).json({
+          message: "unable to add answer",
+          error: err.message,
         })
-        .catch((err) =>
-          res.status(400).json({
-            message: "unable to create question",
-            error: err.message,
-          })
-        );
+      );
     // });
   } catch {}
 };
