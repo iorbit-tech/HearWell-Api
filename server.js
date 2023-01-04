@@ -49,18 +49,16 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   cors: {
     pingTimeOut: 60000,
-    origins: ["http://103.26.108.103:8081/", "http://103.26.108.103:3006/", "http://103.26.108.103:8000/"],
+    // origins: ["http://144.48.50.33:8081/", "http://144.48.50.33:3006"],
+    origin: "ws://localhost:3006/"
   },
 });
-
 
 // io.on("connect", () => {
 //   console.log("connect to socket.io");
 // });
 
-
 io.on("connection", (socket) => {
-  // io.on("setup", (socket) => {
   console.log("setup connected to socket.io");
 
   socket.on("setup", (userId) => {
@@ -80,7 +78,8 @@ io.on("connection", (socket) => {
     if (!chat) return console.log("chat is not find");
     // chat.ForEach((user) => {
     //   if (user._id == newMessageReceived.sender._id) return;
-    socket.broadcast.emit("message received", newMessageReceived);
+    socket.broadcast.emit("Web message received", newMessageReceived);
+    socket.broadcast.emit("Mobile message received", newMessageReceived);
     // })
   });
 });
