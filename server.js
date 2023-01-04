@@ -49,15 +49,38 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   cors: {
     pingTimeOut: 60000,
-    origin: "http://localhost:3006",
+    origins: ["http://103.26.108.103:8081/", "http://103.26.108.103:3006/", "http://103.26.108.103:8000/"],
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("connected to socket.io");
 
-  socket.on("setup", (userData) => {
-    socket.join(userData._id);
+// io.on("connect", () => {
+//   console.log("connect to socket.io");
+// });
+
+
+io.on("connection", (socket) => {
+  // io.on("setup", (socket) => {
+  console.log("setup connected to socket.io");
+
+  socket.on("setup", (userId) => {
+    socket.join(userId);
+    console.log('userId', userId);
     socket.emit("connected");
+  });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log('joined room', room);
+  });
+
+  socket.on("new message", (newMessageReceived) => {
+    console.log(newMessageReceived, 'newMessageReceived');
+    var chat = newMessageReceived;
+    if (!chat) return console.log("chat is not find");
+    // chat.ForEach((user) => {
+    //   if (user._id == newMessageReceived.sender._id) return;
+    socket.broadcast.emit("message received", newMessageReceived);
+    // })
   });
 });
