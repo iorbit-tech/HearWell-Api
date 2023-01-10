@@ -15,7 +15,7 @@ const hearingDiary = require("./routes/hearingDiary");
 const chatMessages = require("./routes/chatMessages");
 const makeQuestions = require("./routes/makeQuestions");
 const surveyAnswers = require("./routes/surveyAnswers");
-const whatsappWebhook = require("./routes/whatsappWebhook");
+const webhook = require("./routes/webhook");
 
 // connect database
 connectDB();
@@ -36,8 +36,7 @@ app.use("/api/hearing-diary", hearingDiary);
 app.use("/api/chat", chatMessages);
 app.use("/api/questions", makeQuestions);
 app.use("/api/answers", surveyAnswers);
-app.use("/api/whatsapp", whatsappWebhook);
-
+app.use("/api/webhook", webhook);
 // setting up port
 
 const PORT = process.env.PORT || 8000;
@@ -49,8 +48,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   cors: {
     pingTimeOut: 60000,
-    // origins: ["http://144.48.50.33:8081/", "http://144.48.50.33:3006"],
-    origin: "ws://localhost:3006/"
+    origins: ["http://103.26.108.103:8081/", "http://103.26.108.103:3006/", "http://103.26.108.103:8000/"],
   },
 });
 
@@ -63,17 +61,17 @@ io.on("connection", (socket) => {
 
   socket.on("setup", (userId) => {
     socket.join(userId);
-    console.log('userId', userId);
+    console.log("userId", userId);
     socket.emit("connected");
   });
 
   socket.on("join chat", (room) => {
     socket.join(room);
-    console.log('joined room', room);
+    console.log("joined room", room);
   });
 
   socket.on("new message", (newMessageReceived) => {
-    console.log(newMessageReceived, 'newMessageReceived');
+    console.log(newMessageReceived, "newMessageReceived");
     var chat = newMessageReceived;
     if (!chat) return console.log("chat is not find");
     // chat.ForEach((user) => {
