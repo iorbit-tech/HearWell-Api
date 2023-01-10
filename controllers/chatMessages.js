@@ -16,6 +16,22 @@ exports.getCahtById = (req, res) => {
     );
 };
 
+exports.getCahtByStatus = (req, res) => {
+  console.log("inside");
+  const query = {
+    status: false,
+  };
+  console.log({ query });
+  ChatMessage.find(query).sort({sentTime: -1})
+    .then((question) => {
+      console.log({ question });
+      res.status(200).json(question);
+    })
+    .catch((err) =>
+      res.status(404).json({ message: "no chat found", error: err.message })
+    );
+};
+
 exports.createChat = async (req, res) => {
   try {
     req.body.status = false;
